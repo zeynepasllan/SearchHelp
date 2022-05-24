@@ -1,0 +1,98 @@
+<!DOCTY "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xht />
+<title>ZZAS_P8</title>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZZAS_P8</h2>
+<h3> Description: </h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZZAS_P8<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT ZZAS_P8.<br />
+<br />
+types: BEGIN OF gty_list,<br />
+&nbsp;&nbsp;pers_id&nbsp;type&nbsp;ZTRN_DE001,<br />
+&nbsp;&nbsp;pers_ad&nbsp;type&nbsp;ZTRN_DE002,<br />
+&nbsp;&nbsp;pers_yas&nbsp;type&nbsp;ZTRN_DE007,<br />
+&nbsp;&nbsp;end&nbsp;of&nbsp;gty_list.<br />
+<br />
+DATA: gt_list type TABLE of gty_list,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_return_tab&nbsp;type&nbsp;TABLE&nbsp;of&nbsp;ddshretval,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_mapping&nbsp;type&nbsp;TABLE&nbsp;of&nbsp;dselc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping&nbsp;type&nbsp;dselc.<br />
+<br />
+DATA: gv_id type char10.<br />
+<br />
+PARAMETERS: p_id TYPE char3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_ad&nbsp;type&nbsp;char20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_yas&nbsp;type&nbsp;char2.<br />
+<br />
+SELECT-OPTIONS: s_id for gv_id.<br />
+<br />
+at SELECTION-SCREEN ON VALUE-REQUEST FOR s_id-low.<br />
+at SELECTION-SCREEN ON VALUE-REQUEST FOR s_id-high.<br />
+<br />
+at SELECTION-SCREEN on VALUE-REQUEST FOR p_id.<br />
+<br />
+&nbsp;&nbsp;select&nbsp;*&nbsp;from&nbsp;zas_sh_t001<br />
+&nbsp;&nbsp;&nbsp;&nbsp;into&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;table&nbsp;gt_list.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping-fldname&nbsp;=&nbsp;'F0001'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping-dyfldname&nbsp;=&nbsp;'P_ID'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_mapping&nbsp;TO&nbsp;gt_mapping.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping-fldname&nbsp;=&nbsp;'F0002'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping-dyfldname&nbsp;=&nbsp;'P_AD'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_mapping&nbsp;TO&nbsp;gt_mapping.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping-fldname&nbsp;=&nbsp;'F0003'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_mapping-dyfldname&nbsp;=&nbsp;'P_YAS'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_mapping&nbsp;TO&nbsp;gt_mapping.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'F4IF_INT_TABLE_VALUE_REQUEST'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retfield&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'PERS_ID'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DYNPPROG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-repid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DYNPNR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-dynnr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DYNPROFIELD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'P_ID'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE_ORG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'S'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;tables<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value_tab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_list<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN_TAB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_return_tab<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DYNPFLD_MAPPING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_mapping<br />
+&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PARAMETER_ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO_VALUES_FOUND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;&lt;&gt;&nbsp;0.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Implement&nbsp;suitable&nbsp;error&nbsp;handling&nbsp;here<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+START-OF-SELECTION.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
